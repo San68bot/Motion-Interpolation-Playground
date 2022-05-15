@@ -18,18 +18,24 @@ import javafx.stage.Stage
 abstract class Base {
     var mainPane = BorderPane()
     var simPane = Pane()
-    var back = Button("Back")
+    private var back = Button("Back")
 
     val canvas = Canvas(Sim.scene, Sim.scene)
     val gc get() = canvas.graphicsContext2D
-
-    var mc = MC()
 
     open fun initiate(stage: Stage) {
         back.layoutX = 10.0
         back.layoutY = 10.0
         simPane.children.addAll(back)
 
+        backButton(stage)
+
+        stage.setOnCloseRequest { endTasks() }
+        simBackground()
+        mainPane.center = simPane
+    }
+
+    private fun backButton(stage: Stage) {
         back.setOnAction {
             Sim().start(stage)
             endTasks()
@@ -40,18 +46,24 @@ abstract class Base {
                 endTasks()
             }
         }
+    }
 
-        stage.setOnCloseRequest { endTasks() }
+    private fun simBackground() {
         simPane.background = Background(
             BackgroundImage(
                 Image(Sim.background), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                 null, null
             )
         )
-        mainPane.center = simPane
     }
 
     open fun endTasks() {}
+
+    open infix fun Label.fontSize(fontSize: Double): Label {
+        this.font = Font.font(fontSize)
+        return this
+    }
+
     open fun setFont(label: Label, fontSize: Double) {
         label.font = Font.font(fontSize)
     }
