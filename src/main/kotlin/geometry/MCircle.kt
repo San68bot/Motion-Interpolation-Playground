@@ -2,7 +2,6 @@ package geometry
 
 import javafx.event.EventHandler
 import javafx.scene.Cursor
-import javafx.scene.canvas.GraphicsContext
 import javafx.scene.control.TextField
 import javafx.scene.input.MouseEvent
 import javafx.scene.paint.Paint
@@ -10,6 +9,7 @@ import javafx.scene.shape.Circle
 import javafx.scene.shape.Rectangle
 import javafx.scene.transform.Rotate
 import utils.round
+import utils.toDegrees
 import kotlin.math.atan2
 
 class MCircle(val center: Position, val radius: Double, val fill: Paint, val xTF: TextField? = null, val yTF: TextField? = null, val tTF: TextField? = null) {

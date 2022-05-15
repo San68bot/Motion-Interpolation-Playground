@@ -1,5 +1,6 @@
 package geometry
 
+import utils.toDegrees
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -18,6 +19,3 @@ data class Position(var x: Double, var y: Double, var theta: Double) {
 
     override fun toString() = String.format("(%.3f, %.3f, %.3f°)", x, y, deg)
 }
-
-fun Number.toDegrees(): Double = Math.toDegrees(this.toDouble())
-fun Number.toRadians(): Double = Math.toRadians(this.toDouble())

@@ -88,7 +88,7 @@ class BiarcWindow: ApplicationBase() {
         p2_h.setOnKeyPressed { event -> if (event.code == KeyCode.ENTER) mc2.resetAngle(p2_h.text.toDouble()) }
 
         //adding mcircles to the simulation pane
-        simPane.children.addAll(mc1.rectangle, mc2.rectangle, mc1.circle, mc2.circle)
+        simPane.children.addAll(mc1.rectangle, mc1.circle, mc2.rectangle, mc2.circle)
 
         //setup the scene and display the stage
         mainPane.bottom = simSettingsMain
