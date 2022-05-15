@@ -3,6 +3,7 @@ package applicationBase
 import Sim
 import javafx.event.EventHandler
 import javafx.geometry.Insets
+import javafx.scene.canvas.Canvas
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.image.Image
@@ -18,6 +19,11 @@ abstract class Base {
     var mainPane = BorderPane()
     var simPane = Pane()
     var back = Button("Back")
+
+    val canvas = Canvas(Sim.scene, Sim.scene)
+    val gc get() = canvas.graphicsContext2D
+
+    var mc = MC()
 
     open fun initiate(stage: Stage) {
         back.layoutX = 10.0

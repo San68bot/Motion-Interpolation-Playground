@@ -1,9 +1,12 @@
 package applicationBase
 
+import geometry.Position
 import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
+import javafx.scene.input.KeyCode
 import javafx.scene.layout.HBox
+import javafx.scene.shape.Circle
 import javafx.stage.Stage
 
 abstract class BiarcBase: Base() {
@@ -28,6 +31,9 @@ abstract class BiarcBase: Base() {
     val p2_y = TextField("0")
     val p2_h = TextField("0")
 
+    val c1 = Position(40.0, 40.0, 0.0)
+    val circle: Circle get() = Circle(c1.x, c1.y, 5.0)
+
     override fun initiate(stage: Stage) {
         super.initiate(stage)
         setFont(close1, 15.0)
@@ -40,11 +46,39 @@ abstract class BiarcBase: Base() {
         p2_y.prefWidth = 50.0
         p2_h.prefWidth = 50.0
 
+        mainPane.setOnMouseClicked { e ->
+            if (e.x <= 800 && e.y <= 800) {
+                c1.x = e.x
+                c1.y = e.y
+                updatePos()
+            }
+        }
+        mainPane.setOnMouseDragged { e ->
+            if (e.x <= 800 && e.y <= 800) {
+                c1.x = e.x
+                c1.y = e.y
+                updatePos()
+            }
+        }
+        mainPane.setOnKeyPressed { e ->
+            if (e.code === KeyCode.ENTER) {
+                c1.x = p1_x.text.toDouble()
+                c1.y = p1_y.text.toDouble()
+                updatePos()
+            }
+        }
+
         simSettings.alignment = Pos.CENTER
         simSettings.children.addAll(
             p1, p1_x, comma1, p1_y, comma1_2, p1_h,
             p2, p2_x, comma2, p2_y, comma2_2, p2_h,
             close1
         )
+    }
+
+    fun updatePos() {
+        p1_x.text = c1.x.toString()
+        p1_y.text = c1.y.toString()
+        mc.setPosition(c1.x, c1.y)
     }
 }

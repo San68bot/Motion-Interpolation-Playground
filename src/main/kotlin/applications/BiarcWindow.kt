@@ -1,15 +1,18 @@
 package applications
 
 import applicationBase.BiarcBase
+import applicationBase.MC
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Scene
 import javafx.scene.control.TextField
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import javafx.scene.shape.Circle
+import javafx.scene.shape.Rectangle
 import javafx.stage.Stage
 
-class Biarc: BiarcBase() {
+class BiarcWindow: BiarcBase() {
     private val simSettings2 = HBox(5.0)
     private val simSettingsMain = VBox(2.5)
 
@@ -38,6 +41,10 @@ class Biarc: BiarcBase() {
             d2, d2_tf,
             close2
         )
+
+        mc = MC()
+        updatePos()
+        simPane.children.addAll(mc)
 
         mainPane.bottom = simSettingsMain
         val scene = Scene(mainPane, Sim.scene, Sim.scene)

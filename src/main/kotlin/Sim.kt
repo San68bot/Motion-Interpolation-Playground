@@ -1,4 +1,4 @@
-import applications.Biarc
+import applications.BiarcWindow
 import javafx.application.Application
 import javafx.event.EventHandler
 import javafx.geometry.Insets
@@ -7,7 +7,6 @@ import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyEvent
 import javafx.scene.layout.*
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
@@ -50,9 +49,9 @@ class Sim: Application() {
         homeBox.children.addAll(title, biarc, alphago)
         startPane.children.addAll(optionsRect, homeBox)
 
-        biarc.setOnAction { Biarc().initiate(stage) }
+        biarc.setOnAction { BiarcWindow().initiate(stage) }
         biarc.onKeyPressed = EventHandler {
-            if (it.code == KeyCode.ENTER) Biarc().initiate(stage)
+            if (it.code == KeyCode.ENTER) BiarcWindow().initiate(stage)
         }
 
 
