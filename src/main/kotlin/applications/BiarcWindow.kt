@@ -4,9 +4,11 @@ import Sim
 import ApplicationBase
 import geometry.MCircle
 import geometry.Point
+import geometry.Position
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Scene
+import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode
@@ -37,13 +39,16 @@ class BiarcWindow: ApplicationBase() {
     private val d1_tf = TextField("0")
     private val d2_tf = TextField("0")
 
+    //buttons
+    private var reset = Button("Reset")
+
     //constants
     private val fontSize = 15.0
     private val tfWidth = 60.0
 
     //center: (400.0, 357.5)
-    private val mc1 = MCircle(Point(200.0, 307.5), 8.0, Color.RED, p1_x, p1_y).setup()
-    private val mc2 = MCircle(Point(600.0, 407.5), 8.0, Color.BLUE, p2_x, p2_y).setup()
+    private val mc1 = MCircle(Position(200.0, 307.5, 0.0), 8.0, Color.RED, p1_x, p1_y, p1_h).setup()
+    private val mc2 = MCircle(Position(600.0, 407.5, 0.0), 8.0, Color.BLUE, p2_x, p2_y, p2_h).setup()
 
     override fun initiate(stage: Stage) {
         super.initiate(stage)
@@ -55,6 +60,9 @@ class BiarcWindow: ApplicationBase() {
         //setting up labels and textfields
         setFonts(p1, p2, d1, d2)
         setTextFieldsFormat(p1_x, p1_y, p1_h, p2_x, p2_y, p2_h, d1_tf, d2_tf)
+
+        //setting up buttons
+        resetButton()
 
         //setting alignment for the simSettings
         simSettings.alignment = Pos.CENTER
@@ -73,11 +81,14 @@ class BiarcWindow: ApplicationBase() {
         //textfield listeners
         p1_x.setOnKeyPressed { event -> if (event.code == KeyCode.ENTER) mc1.resetX(p1_x.text.toDouble()) }
         p1_y.setOnKeyPressed { event -> if (event.code == KeyCode.ENTER) mc1.resetY(p1_y.text.toDouble()) }
+        p1_h.setOnKeyPressed { event -> if (event.code == KeyCode.ENTER) mc1.resetAngle(p1_h.text.toDouble()) }
+
         p2_x.setOnKeyPressed { event -> if (event.code == KeyCode.ENTER) mc2.resetX(p2_x.text.toDouble()) }
         p2_y.setOnKeyPressed { event -> if (event.code == KeyCode.ENTER) mc2.resetY(p2_y.text.toDouble()) }
+        p2_h.setOnKeyPressed { event -> if (event.code == KeyCode.ENTER) mc2.resetAngle(p2_h.text.toDouble()) }
 
         //adding mcircles to the simulation pane
-        simPane.children.addAll(mc1.circle, mc2.circle)
+        simPane.children.addAll(mc1.rectangle, mc2.rectangle, mc1.circle, mc2.circle)
 
         //setup the scene and display the stage
         mainPane.bottom = simSettingsMain
@@ -94,6 +105,16 @@ class BiarcWindow: ApplicationBase() {
         textFields.forEach {
             it.prefWidth = tfWidth
             it.alignment = Pos.CENTER
+        }
+    }
+
+    private fun resetButton() {
+        reset.layoutX = 735.0
+        reset.layoutY = 692.0
+        simPane.children.addAll(reset)
+        reset.setOnAction {
+            mc1.resetPosition(Position(mc1.center.point, 0.0))
+            mc2.resetPosition(Position(mc2.center.point, 0.0))
         }
     }
 }
