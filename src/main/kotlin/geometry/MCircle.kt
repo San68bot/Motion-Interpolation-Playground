@@ -10,13 +10,8 @@ import javafx.scene.shape.Circle
 class MCircle(val center: Point, val radius: Double, val fill: Paint, val xTF: TextField? = null, val yTF: TextField? = null) {
     val circle = Circle(center.x, center.y, radius, fill)
 
-    private var orgSceneX = 0.0
-    private var orgSceneY = 0.0
-    private var orgTranslateX = 0.0
-    private var orgTranslateY = 0.0
-
-    private var newTranslateX = 0.0
-    private var newTranslateY = 0.0
+    private var x = 0.0
+    private var y = 0.0
 
     fun setup(): MCircle {
         circle.cursor = Cursor.HAND
@@ -27,13 +22,13 @@ class MCircle(val center: Point, val radius: Double, val fill: Paint, val xTF: T
     }
 
     private var circleOnMouseDraggedEventHandler = EventHandler<MouseEvent> { t ->
-        newTranslateX = orgTranslateX + (t.sceneX - orgSceneX)
-        newTranslateY = orgTranslateY + (t.sceneY - orgSceneY)
-        if (newTranslateX in 0.0 + radius..Sim.scene - radius && newTranslateY in 0.0 + radius..(Sim.scene-75.0) - radius) {
-            (t.source as Circle).translateX = newTranslateX - circle.centerX
-            (t.source as Circle).translateY = newTranslateY - circle.centerY
-            xTF?.text = newTranslateX.toString()
-            yTF?.text = newTranslateY.toString()
+        x = t.sceneX
+        y = t.sceneY
+        if (x in 0.0 + radius..Sim.scene - radius && y in 0.0 + radius..(Sim.scene-75.0) - radius) {
+            (t.source as Circle).translateX = x - circle.centerX
+            (t.source as Circle).translateY = y - circle.centerY
+            xTF?.text = x.toString()
+            yTF?.text = y.toString()
         }
     }
 
@@ -42,15 +37,15 @@ class MCircle(val center: Point, val radius: Double, val fill: Paint, val xTF: T
         resetY(p.y)
     }
 
-    fun resetX(x: Double) {
-        newTranslateX = x
-        circle.translateX = newTranslateX - circle.centerX
-        xTF?.text = newTranslateX.toString()
+    fun resetX(newX: Double) {
+        x = newX
+        circle.translateX = x - circle.centerX
+        xTF?.text = x.toString()
     }
 
-    fun resetY(y: Double) {
-        newTranslateY = y
-        circle.translateY = newTranslateY - circle.centerY
-        yTF?.text = newTranslateY.toString()
+    fun resetY(newY: Double) {
+        y = newY
+        circle.translateY = y - circle.centerY
+        yTF?.text = y.toString()
     }
 }

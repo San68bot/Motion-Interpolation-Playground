@@ -1,14 +1,7 @@
-package applicationBase
-
-import Sim
-import javafx.event.EventHandler
-import javafx.geometry.Insets
 import javafx.scene.canvas.Canvas
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.image.Image
-import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyEvent
 import javafx.scene.layout.*
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
@@ -16,7 +9,7 @@ import javafx.scene.text.FontWeight
 import javafx.scene.text.Text
 import javafx.stage.Stage
 
-abstract class Base {
+abstract class ApplicationBase {
     var mainPane = BorderPane()
     var simPane = Pane()
     private var back = Button("Back")
@@ -30,8 +23,6 @@ abstract class Base {
         simPane.children.addAll(back)
 
         backButton(stage)
-
-        stage.setOnCloseRequest { endTasks() }
         simBackground()
         mainPane.center = simPane
     }
@@ -39,7 +30,6 @@ abstract class Base {
     private fun backButton(stage: Stage) {
         back.setOnAction {
             Sim().start(stage)
-            endTasks()
         }
     }
 
@@ -51,8 +41,6 @@ abstract class Base {
             )
         )
     }
-
-    open fun endTasks() {}
 
     open infix fun Label.colorFill(color: Color): Label {
         this.textFill = color

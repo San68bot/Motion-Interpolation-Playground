@@ -1,7 +1,7 @@
 package applications
 
 import Sim
-import applicationBase.Base
+import ApplicationBase
 import geometry.MCircle
 import geometry.Point
 import javafx.geometry.Insets
@@ -16,16 +16,18 @@ import javafx.scene.paint.Color
 import javafx.stage.Stage
 
 
-class BiarcWindow: Base() {
+class BiarcWindow: ApplicationBase() {
     private val simSettings = HBox(5.0)
     private val simSettings2 = HBox(5.0)
     private val simSettingsMain = VBox(2.5)
 
+    //labels
     private var p1 = Label("Position1:  (")
     private var p2 = Label("Position2:  (")
     private var d1 = Label("Distance1:  (")
     private var d2 = Label("Distance2:  (")
 
+    //textfields
     private val p1_x = TextField("0")
     private val p1_y = TextField("0")
     private val p1_h = TextField("0")
@@ -35,12 +37,13 @@ class BiarcWindow: Base() {
     private val d1_tf = TextField("0")
     private val d2_tf = TextField("0")
 
+    //constants
     private val fontSize = 15.0
     private val tfWidth = 60.0
 
     //center: (400.0, 357.5)
-    private val mc1 = MCircle(Point(200.0, 307.5), 10.0, Color.RED, p1_x, p1_y).setup()
-    private val mc2 = MCircle(Point(600.0, 407.5), 10.0, Color.BLUE, p2_x, p2_y).setup()
+    private val mc1 = MCircle(Point(200.0, 307.5), 8.0, Color.RED, p1_x, p1_y).setup()
+    private val mc2 = MCircle(Point(600.0, 407.5), 8.0, Color.BLUE, p2_x, p2_y).setup()
 
     override fun initiate(stage: Stage) {
         super.initiate(stage)

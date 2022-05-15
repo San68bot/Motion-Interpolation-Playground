@@ -50,10 +50,7 @@ class Sim: Application() {
         startPane.children.addAll(optionsRect, homeBox)
 
         biarc.setOnAction { BiarcWindow().initiate(stage) }
-        biarc.onKeyPressed = EventHandler {
-            if (it.code == KeyCode.ENTER) BiarcWindow().initiate(stage)
-        }
-
+        alphago.setOnAction { println("AlphaGo") }
 
         startPane.background = Background(BackgroundImage(Image(background), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, null, null))
         mainPane.center = startPane
