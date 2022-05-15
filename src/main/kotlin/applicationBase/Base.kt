@@ -10,6 +10,7 @@ import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.*
+import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
 import javafx.scene.text.Text
@@ -40,12 +41,6 @@ abstract class Base {
             Sim().start(stage)
             endTasks()
         }
-        back.onKeyPressed = EventHandler { e: KeyEvent ->
-            if (e.code == KeyCode.ENTER) {
-                Sim().start(stage)
-                endTasks()
-            }
-        }
     }
 
     private fun simBackground() {
@@ -58,6 +53,11 @@ abstract class Base {
     }
 
     open fun endTasks() {}
+
+    open infix fun Label.colorFill(color: Color): Label {
+        this.textFill = color
+        return this
+    }
 
     open infix fun Label.fontSize(fontSize: Double): Label {
         this.font = Font.font(fontSize)
