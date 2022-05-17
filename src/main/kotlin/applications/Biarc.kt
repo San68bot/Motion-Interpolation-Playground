@@ -5,6 +5,7 @@ import applications.MathFunctions.add
 import applications.MathFunctions.addScaled
 import applications.MathFunctions.cross
 import applications.MathFunctions.dot
+import applications.MathFunctions.headingVector
 import applications.MathFunctions.isNormalizedEps
 import applications.MathFunctions.magnitude
 import applications.MathFunctions.scale
@@ -14,11 +15,13 @@ import utils.toRadians
 import kotlin.math.*
 
 data class Vec3(var x: Double = 0.0, var y: Double = 0.0, var z: Double = 0.0) {
-    override fun toString(): String = "Vec3(x: ${x.round(3)}, y: ${y.round(3)})"
+    override fun toString(): String = "Vec3(x: ${x round 3}, y: ${y round 3})"
 }
 
 object MathFunctions {
     fun dot(a: Vec3, b: Vec3): Double = (a.x * b.x + a.y * b.y + a.z * b.z)
+
+    fun dot(a: Vec3): Double = dot(a, a)
 
     fun cross(a: Vec3, b: Vec3): Vec3 = Vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
 
@@ -30,10 +33,14 @@ object MathFunctions {
 
     fun addScaled(a: Vec3, b: Vec3, s: Double): Vec3 = Vec3(a.x + b.x * s, a.y + b.y * s, a.z + b.z * s)
 
-    fun magnitude(a: Vec3): Double = sqrt(dot(a, a))
+    fun magnitude(a: Vec3): Double = sqrt(dot(a))
+
+    fun Double.thetaVector(): Vec3 = Vec3(cos(this), sin(this))
+
+    fun Double.headingVector(): Vec3 = Vec3(cos(this.toRadians()), sin(this.toRadians()))
 
     fun isNormalizedEps(a: Vec3, epsilon: Double): Boolean {
-        val sqrMag = dot(a, a)
+        val sqrMag = dot(a)
         return sqrMag >= (1.0 - epsilon) * (1.0 - epsilon) && sqrMag <= (1.0f + epsilon) * (1.0 + epsilon)
     }
 
@@ -65,7 +72,7 @@ fun SingleBiarc(point: Vec3, tangent: Vec3, pointToMid: Vec3): SingleBiarcOutput
             mArcAngle = 0.0
         }
         else -> {
-            val centerDist = dot(pointToMid, pointToMid) / denominator
+            val centerDist = dot(pointToMid) / denominator
             mArcCenter = addScaled(point, perpAxis, centerDist)
 
             val perpAxisMag = magnitude(perpAxis)
@@ -105,7 +112,7 @@ fun ComputeBiarcs(p1: Vec3, t1: Vec3, p2: Vec3, t2: Vec3): ComputeBiarcsOutput {
     val epsilon = 0.0001
 
     val v = sub(p2, p1)
-    val vDotV = dot(v, v)
+    val vDotV = dot(v)
 
     if (vDotV < epsilon) {
         mpArc1.apply {
@@ -266,20 +273,20 @@ fun BiarcInterpolation(arc1: BiarcInterpolationData, arc2: BiarcInterpolationDat
     }
     return BiarcInterpolationOutput(pResult, m_angle)
 }
+fun BiarcInterpolation(arc: ComputeBiarcsOutput, frac: Double): BiarcInterpolationOutput = BiarcInterpolation(arc.pArc1, arc.pArc2, frac)
+
+infix fun ComputeBiarcsOutput.interpolationAt(frac: Double): BiarcInterpolationOutput = BiarcInterpolation(this, frac)
 
 fun main() {
     val p1 = Vec3(200.0, 150.0)
     val p2 = Vec3(400.0, 350.0)
-    val p1Angle = ((0.0).toRadians())
-    val p2Angle = ((0.0).toRadians())
-    val t1 = Vec3(cos(p1Angle).round(3), sin(p1Angle).round(3))
-    val t2 = Vec3(cos(p2Angle).round(3), sin(p2Angle).round(3))
+    val t1 = (0.0).headingVector()
+    val t2 = (0.0).headingVector()
 
     val arc = ComputeBiarcs(p1, t1, p2, t2)
+    val p = arc interpolationAt 0.5
 
-    val p = BiarcInterpolation(arc.pArc1, arc.pArc2, 0.5)
-
-    println("c1 center: ${arc.pArc1.biarc_center}, c1 angle: ${arc.pArc1.biarc_angle.round(5)}, c1 radius: ${arc.pArc1.biarc_radius.round(3)}")
-    println("c2 center: ${arc.pArc2.biarc_center}, c2 angle: ${arc.pArc2.biarc_angle.round(5)}, c2 radius: ${arc.pArc2.biarc_radius.round(3)}")
-    println("p vec: ${p.vector}, p angle: ${p.theta.round(5)}")
+    println("c1 center: ${arc.pArc1.biarc_center}, c1 angle: ${arc.pArc1.biarc_angle round 5}, c1 radius: ${arc.pArc1.biarc_radius round 3}")
+    println("c2 center: ${arc.pArc2.biarc_center}, c2 angle: ${arc.pArc2.biarc_angle round 5}, c2 radius: ${arc.pArc2.biarc_radius round 3}")
+    println("p vec: ${p.vector}, p angle: ${p.theta round 5}")
 }

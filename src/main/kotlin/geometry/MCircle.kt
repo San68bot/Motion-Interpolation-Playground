@@ -31,9 +31,9 @@ class MCircle(val center: Position, val radius: Double, val fill: Paint, val xTF
         rectangle.cursor = Cursor.HAND
         rectangle.onMouseDragged = rectangleOnMouseDraggedEventHandler
 
-        xTF?.text = center.x.round().toString()
-        yTF?.text = center.y.round().toString()
-        tTF?.text = center.deg.round().toString()
+        xTF?.text = (center.x round 2).toString()
+        yTF?.text = (center.y round 2).toString()
+        tTF?.text = (center.deg round 2).toString()
         return this
     }
 
@@ -43,8 +43,8 @@ class MCircle(val center: Position, val radius: Double, val fill: Paint, val xTF
         if (x in 0.0 + radius..Sim.scene - radius && y in 0.0 + radius..(Sim.scene-75.0) - radius) {
             (t.source as Circle).translateX = x - circle.centerX
             (t.source as Circle).translateY = y - circle.centerY
-            xTF?.text = x.round().toString()
-            yTF?.text = y.round().toString()
+            xTF?.text = (x round 2).toString()
+            yTF?.text = (y round 2).toString()
             updateRect()
         }
     }
@@ -52,7 +52,7 @@ class MCircle(val center: Position, val radius: Double, val fill: Paint, val xTF
     private var rectangleOnMouseDraggedEventHandler = EventHandler<MouseEvent> { t ->
         val angle = atan2(t.sceneY - y, t.sceneX - x).toDegrees()
         rotate.angle = angle
-        tTF?.text = angle.round().toString()
+        tTF?.text = (angle round 2).toString()
         updateRect()
     }
 
@@ -76,20 +76,20 @@ class MCircle(val center: Position, val radius: Double, val fill: Paint, val xTF
     fun resetX(newX: Double) {
         x = newX
         circle.translateX = x - circle.centerX
-        xTF?.text = x.round().toString()
+        xTF?.text = (x round 2).toString()
         rectangle.x = newX
     }
 
     fun resetY(newY: Double) {
         y = newY
         circle.translateY = y - circle.centerY
-        yTF?.text = y.round().toString()
+        yTF?.text = (y round 2).toString()
         rectangle.y = newY - (rectangle.height / 2)
     }
 
     fun resetAngle(newAngle: Double) {
         rotate.angle = newAngle
-        tTF?.text = newAngle.round().toString()
+        tTF?.text = (newAngle round 2).toString()
         updateRect()
     }
 }
